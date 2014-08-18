@@ -1,9 +1,7 @@
-var discover = {
-	search: function(str, callback) {
-		cordova.exec(callback, function(err) {
-			callback('Nothing to echo.');
-		}, "Discover", "search", [str]);
-	};
+var Discover = {
+    search: function(successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "Discover", "search", []);
+    }
 };
 
-module.exports = discover;
+module.exports = Discover;
