@@ -43,7 +43,7 @@ public class Discover extends CordovaPlugin {
                         }else{
                             callbackContext.success(addr.getHostString() + ":" + addr.getPort());
                         }
-                    }catch(IOException e){
+                    }catch(Exception e){
                         callbackContext.error(e.getMessage());
                     }
                 }
