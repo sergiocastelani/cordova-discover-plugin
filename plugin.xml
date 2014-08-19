@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
 xmlns:android="http://schemas.android.com/apk/res/android"
 id="com.itminfo.cordova.Discover"
-version="0.2.12-dev">
+version="0.2.13">
 
     <name>DiscoverPlugin</name>
     <description>LAN Services Discover Plugin</description>
