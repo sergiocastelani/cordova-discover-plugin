@@ -7,8 +7,6 @@ version="0.2.13">
     <name>DiscoverPlugin</name>
     <description>LAN Services Discover Plugin</description>
 
-    <asset src="www/DiscoverPlugin.js" target="plugins/DiscoverPlugin.js" />
-
     <engines>
             <engine name="cordova" version=">=3.0.0" />
     </engines>

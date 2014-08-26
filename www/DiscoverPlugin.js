@@ -1,7 +1,11 @@
-var Discover = {
+var exec = require('cordova/exec');
+
+var Discover = window.Discover = {
     search: function(successCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "Discover", "search", []);
+        exec(successCallback, errorCallback, "Discover", "search", []);
     }
 };
 
-module.exports = Discover;
+if (typeof module != 'undefined' && module.exports) {
+  module.exports = window.Discover;
+}
