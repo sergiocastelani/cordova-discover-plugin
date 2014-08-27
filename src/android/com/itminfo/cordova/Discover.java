@@ -27,21 +27,19 @@ import android.net.wifi.WifiManager;
  */
 public class Discover extends CordovaPlugin {
     static final private int SERVICE_ID = 0x49AF5D2C;
-    static final private int VERSION = 0x01;
-    static final private int SERVICE_PORT = 7904;
         
     @Override
-    public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
         
         if (action.equals("search")) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     try{
-                        InetSocketAddress addr = findServer(cordova.getActivity().getApplicationContext());
+                        InetSocketAddress addr = findServer(cordova.getActivity().getApplicationContext(), args.getInt(0), args.getInt(1));
                         if(addr == null){
                             callbackContext.error("Server not found");
                         }else{
-                            callbackContext.success(addr.getHostString() + ":" + addr.getPort());
+                            callbackContext.success(addr.getHostString());
                         }
                     }catch(Exception e){
                         callbackContext.error(e.getMessage());
@@ -54,7 +52,7 @@ public class Discover extends CordovaPlugin {
         return false;
     }
 
-    public InetSocketAddress findServer(Context context) throws IOException
+    public InetSocketAddress findServer(Context context, int version, int port) throws IOException
     {
         InetAddress broadcastAddr = getBroadcastAddress(context);
 
@@ -65,9 +63,9 @@ public class Discover extends CordovaPlugin {
 
         ByteBuffer dataBuffer = ByteBuffer.allocate(8).order(ByteOrder.BIG_ENDIAN);
         dataBuffer.putInt(SERVICE_ID);
-        dataBuffer.putInt(VERSION);
+        dataBuffer.putInt(version);
 
-        DatagramPacket packet = new DatagramPacket(dataBuffer.array(), 8, broadcastAddr, SERVICE_PORT);
+        DatagramPacket packet = new DatagramPacket(dataBuffer.array(), 8, broadcastAddr, port);
 
         socket.send(packet);
 
@@ -77,10 +75,10 @@ public class Discover extends CordovaPlugin {
         int receivedServiceID = dataBuffer.getInt();
         int receivedVersion = dataBuffer.getInt();
 
-        if(receivedServiceID != SERVICE_ID || receivedVersion != VERSION)
+        if(receivedServiceID != SERVICE_ID || receivedVersion != version)
             return null;
 
-        return new InetSocketAddress(packet.getAddress(), SERVICE_PORT);
+        return new InetSocketAddress(packet.getAddress(), port);
     }
 
     private InetAddress getBroadcastAddress(Context context) throws IOException 
